@@ -1,0 +1,26 @@
+doctype
+html
+  head
+    meta(charset='UTF-8')
+    title= title
+    meta(name='viewport' content='width=device-width, user-scalable=no')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    link(rel='stylesheet' href='/join.css')
+  body
+    .timeline
+      .signup Singup
+      form.join-form(action='/auth/join' method='POST')
+        .input-group 
+          input#join-email(type='email' name='email' placeholder="Email")
+        .input-group
+          input#join-nick(type='text' name='nick' placeholder="NickName")
+        .input-group
+          input#join-password(type='password' name='password' placeholder="password")
+        if joinError
+          .error-message= joinError
+        .submit
+          button#join-btn.btn(type='submit') SignUp
+          a#google.btn(href='/auth/google') Google Login
+          button#join-btn.btn
+            a(href="/") Back to Main
+//- 회원가입 페이지

@@ -1,0 +1,24 @@
+{
+  "name": "clova-face-recognition",
+  "version": "1.0.0",
+  "description": "node js x clova face recognition test",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ryan kim",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "form-data": "^3.0.0",
+    "multer": "^1.4.2",
+    "pug": "^3.0.0",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

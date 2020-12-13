@@ -1,0 +1,44 @@
+doctype
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        meta(http-equiv='X-UA-Compatible' content='IE=edge')
+        link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN",crossorigin="anonymous")
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap")
+        link(rel="stylesheet" href="/css/style.css")
+        title ToDo App
+    body
+        .container
+            .header
+                .refresh-icon
+                    i(class="fa fa-refresh clear" aria-hidden="true" copmn)
+                .dating
+                    span Today To Do
+                    #year.Year
+                    .Day
+                        .day
+                        .month
+                        .numeric
+            form(action="/post" method="POST" class="add-to-do")
+                button.submit
+                    i(class="fa fa-plus-circle" aria-hidden="true" value=``)
+                input(type="text" id="input" placeholder="Add to do" maxlength="20" name="posts")
+            .content
+                .wrapper
+                    h3 To Do
+                    .list
+                        each post in allPosts
+                            div(class="item" draggable="true")
+                                i(class=`fa ${post.lineThrough ? "fa-check-circle-o":"fa-circle-o"} check` job="complete" id=`${post.id}`)
+                                    input(type="hidden" class="toggle" name="lineCheck" value=`${post.lineThrough}`)
+                                span(class=`text ${post.lineThrough ? "lineThrough": "" }`) #{post.content}
+                                i(class="fa fa-trash-o" job="delete" id=`${post.id}`)
+                .wrapper
+                    h3 In Progress
+                    .list
+                .wrapper
+                    h3 Done
+                    .list
+        script(src="https://unpkg.com/axios/dist/axios.min.js")
+        script(src="/js/javscript.js")

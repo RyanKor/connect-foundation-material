@@ -1,0 +1,85 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(148, 180, 240);
+}
+
+.timeline {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup {
+  font-size: 2rem;
+}
+
+.join-form a {
+  width: 33%;
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+}
+
+.btn:hover,
+.join-form a:hover {
+  color: rgb(24, 40, 189);
+}
+.btn {
+  display: inline-block;
+  padding: 0 5px;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 4px;
+  background: white;
+  border: 1px solid silver;
+  color: rgb(0, 0, 0);
+  height: 37px;
+  line-height: 37px;
+  vertical-align: top;
+  font-size: 12px;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  border-radius: 4px;
+  height: 2.5rem;
+  padding: 1rem;
+  border: 1px solid silver;
+  width: 100%;
+}
+.input-group {
+  width: 80%;
+  margin-top: 0.8rem;
+}
+
+.join-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 40%;
+  border-radius: 4px;
+  border: 1px solid silver;
+  background: rgb(93, 178, 235);
+}
+
+.submit {
+  width: 80%;
+  text-align: center;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#join-btn {
+  width: 33%;
+}

@@ -1,0 +1,36 @@
+doctype
+html
+  head
+    meta(charset='UTF-8')
+    title= title
+    meta(name='viewport' content='width=device-width, user-scalable=no')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    link(rel='stylesheet' href='/main.css')
+  body
+    .container
+      .title LIKELION Twit
+      .profile-wrap
+          if user && user.id
+            .profile
+              .user-name= 'Hello! ' + user.nick
+              input#my-id(type='hidden' value=user.id)
+              a#logout.btn(href='/auth/logout') Logout
+          else
+            form#login-form(action='/auth/login' method='POST')
+              .input-group
+                input#email(type='email' name='email' placeholder = "ID (email)" required autofocus)
+              .input-group
+                input#password(type='password' name='password' placeholder = "Password" required)
+              if loginError
+                .error-message= loginError
+              .submit
+                a#join.btn(href='/join') Signup
+                a#google.btn(href='/auth/google') Google Login
+                button#login.btn(type='submit') Login
+      block content
+//- if 문을 중심으로 해당 코드를 읽어보면 된다. 로그인 했을 때는 팔로우 수, 팔로잉, 로그인 메뉴 보여준다.
+
+
+//- 유저 변수가 존재할 때, 게시글 업로드 창을 보여준다.
+//- -const follow = user && user.Followings.map(f => f.id).includes(twit.user.id);
+//- 위의 코드는 사용자가 현재 게시글 작성자를 팔로잉 중인지 보여주고 있다.

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title NAVER AI API TEST
+        script(class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
+        link(rel="stylesheet", href="/css/main.css")
+    body
+        .title 인공지능 얼굴 나이 측정기 - 당신은 동안입니까?
+        form(action='/image' method='POST' enctype='multipart/form-data' class="image-upload-wrap")
+            img#img-preview( src='' style='display: none;' width='250' alt='Preview')
+            input#img(type='file' accept='image/*')
+            //- button(type='submit' class="submit") Posting!
+        .clova(style='display: none;')
+            .age
+            .confidence
+        .addthis_inline_share_toolbox
+        #disqus_thread
+        script(type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f75a90b15d724ef")
+        script(src="https://unpkg.com/axios/dist/axios.min.js")
+        script.
+            if (document.getElementById('img')) {
+                document.getElementById('img').addEventListener('change', async function (e) {
+                    let formData = new FormData();
+                    console.log(this, this.files);
+                    let imgName = this.files[0].name
+                    formData.append('image', this.files[0]);
+                    await axios.post('/image', formData).then((results)=>{
+                    results.request.onload = function () {
+                    if (results.status === 200) {
+                        let url = JSON.parse(results.request.response).url;
+                        let faceAge = JSON.parse(results.request.response).faces
+                        console.log(faceAge)
+                        document.getElementById('img-preview').src = url;
+                        //- console.log(document.getElementById('img-preview').src)
+                        document.getElementById('img-preview').style.display = 'inline';
+                        document.querySelector('.image-upload-wrap').style.border = "none";
+                        document.querySelector('.clova').style.display = 'inline';
+                        for(let i=0; i<faceAge.length; i++){
+                        document.querySelector('.clova').appendChild(document.createElement("div")).innerHTML = faceAge[i].age.value
+                        document.querySelector('.clova').appendChild(document.createElement("div")).innerHTML = faceAge[i].age.confidence
+                        }
+
+                    } else {
+                        console.error(results.request.responseText);
+                    }
+                    };
+                    })
+                });
+                }
+            (function () {
+                // DON'T EDIT BELOW THIS LINE
+                var d = document,
+                s = d.createElement("script");
+                s.src = "https://seungtae-kim-github-io.disqus.com/embed.js";
+                s.setAttribute("data-timestamp", +new Date());
+                (d.head || d.body).appendChild(s);
+            })();

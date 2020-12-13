@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Squat Coaching</title>
+    <meta property="og:title" content="AI Squat Coaching" />
+    <meta
+      property="og:description"
+      content="Make your correct squat form with AI PT"
+    />
+    <meta
+      property="og:image"
+      content="https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+    />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-179471484-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-179471484-1");
+    </script>
+    <header>
+      <a href="./" class="logo">AI Fitness Coaching</a>
+      <div class="lang">
+        <a class="blog" href="https://medium.com/@equus3144">Blog</a>
+        <a href="./vn.html" class="vn">Tiếng Việt</a>
+        <a href="./en.html" class="en">English</a>
+        <a href="./" class="ko">한국어</a>
+      </div>
+    </header>
+    <main>
+      <div class="description">Do Your Squat Posture</div>
+      <button type="button" onclick="init()" class="btn">Squat Start</button>
+      <canvas class="squat" id="canvas"></canvas>
+      <div id="label-container"></div>
+    </main>
+    <footer>
+      <div class="addthis_inline_share_toolbox"></div>
+      <div id="disqus_thread"></div>
+      <div class="info">
+        <div class="email">equus3144@gmail.com</div>
+        <div class="maker">&copy; Made by Ryan</div>
+        <div class="message">More Posture will be updated</div>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+    <script
+      type="text/javascript"
+      src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f75a90b15d724ef"
+    ></script>
+    <script type="text/javascript">
+      // More API functions here:
+      // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
+
+      // the link to your model provided by Teachable Machine export panel
+      const canvas = document.querySelector("#canvas");
+      const URL = "https://teachablemachine.withgoogle.com/models/jc5jBN53I/";
+      let model, webcam, ctx, labelContainer, maxPredictions;
+
+      async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // Note: the pose library adds a tmPose object to your window (window.tmPose)
+        model = await tmPose.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const size = 200;
+        const flip = true; // whether to flip the webcam
+        webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append/get elements to the DOM
+        const canvas = document.getElementById("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        ctx = canvas.getContext("2d");
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) {
+          // and class labels
+          labelContainer.appendChild(document.createElement("div"));
+        }
+      }
+
+      async function loop(timestamp) {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+      }
+
+      async function predict() {
+        // Prediction #1: run input through posenet
+        // estimatePose can take in an image, video or canvas html element
+        const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+        // Prediction 2: run input through teachable machine classification model
+        const prediction = await model.predict(posenetOutput);
+
+        for (let i = 0; i < maxPredictions; i++) {
+          const classPrediction =
+            prediction[i].className +
+            " : " +
+            prediction[i].probability.toFixed(2);
+          labelContainer.childNodes[i].innerHTML = classPrediction;
+          if (
+            prediction[0].className === "Good Squat Form" &&
+            parseFloat(prediction[0].probability.toFixed(2)) > 0.8
+          ) {
+            canvas.style.border = "10px solid green";
+            labelContainer.childNodes[0].style.color = "green";
+            labelContainer.childNodes[1].style.color = "black";
+          } else {
+            canvas.style.border = "10px solid red";
+            labelContainer.childNodes[0].style.color = "black";
+            labelContainer.childNodes[1].style.color = "red";
+          }
+        }
+
+        // finally draw the poses
+        drawPose(pose);
+      }
+
+      function drawPose(pose) {
+        if (webcam.canvas) {
+          ctx.drawImage(webcam.canvas, 0, 0);
+          // draw the keypoints and skeleton
+          if (pose) {
+            const minPartConfidence = 0.5;
+            tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+            tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+          }
+        }
+      }
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+      /*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+      (function () {
+        // DON'T EDIT BELOW THIS LINE
+        var d = document,
+          s = d.createElement("script");
+        s.src = "https://seungtae-kim-github-io.disqus.com/embed.js";
+        s.setAttribute("data-timestamp", +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+  </body>
+</html>

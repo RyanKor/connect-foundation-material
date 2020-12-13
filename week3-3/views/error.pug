@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= message
+  h2= error.status
+  pre #{error.stack}
+
+//- 서버에 발생하는 에러 내역을 띄워준다
+//- 배포할 때는 해당 에러 내용을 보여주지 않는 것이 좋다.

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title NAVER AI API TEST
+        link(rel="stylesheet", href="/css/main.css")
+    body
+        .container
+            .title Thử đoán độ tuổi qua gương mặt của bạn bằng trí tuệ nhân tạo - Liệu bạn có gương mặt trẻ hay không? 🙉
+            form(action='/image' method='POST' enctype='multipart/form-data' class="image-upload-wrap")
+                img#img-preview( src='' style='display: none;' width='250' alt='Preview')
+                input#img(type='file' accept='image/*')
+            .clova(style='display: none;')
+                .description Xin chào chủ nhân! Tôi là Trí tuệ nhân tạo sẽ giúp chủ nhân kiểm tra độ tuổi qua gương mặt của bạn. 😄
+                .age
+                .confidence
+            .etc
+                .share Chia sẽ với bạn bè.
+                .addthis_inline_share_toolbox
+                #disqus_thread
+        script(type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f75a90b15d724ef")
+        script(src="https://unpkg.com/axios/dist/axios.min.js")
+        script.
+            (function () {
+                var d = document,
+                s = d.createElement("script");
+                s.src = "https://seungtae-kim-github-io.disqus.com/embed.js";
+                s.setAttribute("data-timestamp", +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+            if (document.getElementById('img')) {
+                document.getElementById('img').addEventListener('change', async function (e) {
+                    let formData = new FormData();
+                    let imgName = this.files[0].name
+                    formData.append('image', this.files[0]);
+                    await axios.post('/image', formData).then((results)=>{
+                    results.request.onload = function () {
+                    if (results.status === 200) {
+                        let url = JSON.parse(results.request.response).url;
+                        let faceAge = JSON.parse(results.request.response).faces
+                        document.getElementById('img-preview').src = url;
+                        document.getElementById('img-preview').style.display = 'inline';
+                        document.querySelector('.image-upload-wrap').style.border = "none";
+                        document.querySelector('.clova').style.display = 'flex';
+                        for(let i=0; i<faceAge.length; i++){
+                        document.querySelector('.clova').appendChild(document.createElement("div")).innerHTML =`Độ tuổi của người trong bức ảnh sẽ được suy luận bằng ${faceAge[i].age.value}`
+                        document.querySelector('.clova').appendChild(document.createElement("div")).innerHTML = `Và đánh giá mức độ chính xác bằng ${parseFloat(faceAge[i].age.confidence).toFixed(2)*100}%`
+                        }
+
+                    } else {
+                        console.error(results.request.responseText);
+                    }
+                    };
+                    })
+                });
+                }

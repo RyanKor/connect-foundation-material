@@ -1,0 +1,161 @@
+.title {
+  font-size: 2rem;
+  margin: 2rem 0 0 2rem;
+  width: 40%;
+  text-align: center;
+}
+
+#login-form {
+  width: 40%;
+  padding: 1rem;
+  margin: 0 2rem;
+  border-radius: 4px;
+  border: 1px solid silver;
+  background: rgb(93, 178, 235);
+  display: flex;
+  flex-direction: column;
+}
+
+.submit a,
+.submit .btn {
+  width: 33%;
+  text-align: center;
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+}
+
+.btn:hover,
+#login-form a:hover {
+  color: rgb(24, 40, 189);
+}
+.btn {
+  display: inline-block;
+  padding: 0 5px;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 4px;
+  background: white;
+  border: 1px solid silver;
+  color: rgb(0, 0, 0);
+  height: 37px;
+  line-height: 37px;
+  vertical-align: top;
+  font-size: 12px;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  border-radius: 4px;
+  height: 37px;
+  padding: 10px;
+  border: 1px solid silver;
+}
+
+.input-group input {
+  width: 100%;
+  margin-top: 0.8rem;
+}
+
+.submit {
+  width: 100%;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.profile {
+  width: 40%;
+  padding: 1rem;
+  margin: 0 2rem;
+  border-radius: 4px;
+  border: 1px solid silver;
+  background: rgb(93, 178, 235);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#logout {
+  margin-left: 1.5rem;
+}
+
+/* 게시글 업로드 CSS */
+
+#twit-form {
+  border-bottom: 1px solid silver;
+  padding: 10px;
+  background: lightcoral;
+  overflow: hidden;
+}
+#img-preview {
+  max-width: 100%;
+}
+#img-label {
+  float: left;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid silver;
+  padding: 0 10px;
+  color: white;
+  font-size: 12px;
+  height: 37px;
+  line-height: 37px;
+}
+#img {
+  display: none;
+}
+#twit {
+  width: 100%;
+  min-height: 72px;
+}
+#twit-btn {
+  float: right;
+  color: white;
+  background: crimson;
+  border: none;
+}
+.twit {
+  border: 1px solid silver;
+  border-radius: 4px;
+  padding: 10px;
+  position: relative;
+  margin-bottom: 10px;
+}
+.twit-author {
+  display: inline-block;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.twit-follow {
+  padding: 1px 5px;
+  background: #fff;
+  border: 1px solid silver;
+  border-radius: 5px;
+  color: crimson;
+  font-size: 12px;
+  cursor: pointer;
+}
+.twit-img {
+  text-align: center;
+}
+.twit-img img {
+  max-width: 75%;
+}
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+#search-form {
+  text-align: right;
+}
+#join-form {
+  padding: 10px;
+  text-align: center;
+}
+#hashtag-form {
+  text-align: right;
+}
+footer {
+  text-align: center;
+}
